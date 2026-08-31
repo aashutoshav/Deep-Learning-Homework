@@ -1,0 +1,18 @@
+[project]
+name = "HW1"
+version = "0.1.0"
+description = "CS4644/7643 HW1"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "ipykernel>=6.30.1",
+    "jax>=0.7.0",
+    "jaxtyping>=0.3.2",
+    "matplotlib>=3.10.3",
+    "numpy>=2.3.1",
+    "pytest>=8.4.1",
+    "pyyaml>=6.0.2",
+    "tqdm>=4.67.1",
+    "nbconvert[webpdf]>=7.16.4",
+    "gdown>=4.7.3",
+]

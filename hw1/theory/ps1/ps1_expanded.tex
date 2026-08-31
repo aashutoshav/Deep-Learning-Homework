@@ -1,0 +1,363 @@
+\DocumentMetadata{
+    tagging=on,
+    tagging-setup={math/setup=mathml-SE},
+    pdfstandard=ua-2,
+    lang=en-US,
+}
+\documentclass[11pt,english]{article}
+
+
+
+\listfiles
+\usepackage{fullpage}
+\usepackage[showframe=false,margin=1in]{geometry}
+\parindent=0pt
+
+\usepackage{relsize}
+\usepackage[T1]{fontenc} % for properly hyphenating words with accented chars
+\usepackage{babel}
+
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[belowskip=0pt,aboveskip=0pt,font=small]{caption}
+\usepackage{subcaption}
+\setlength{\intextsep}{7pt plus 0pt minus 0pt}
+
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{textcomp}
+\usepackage{stmaryrd}
+\usepackage{upgreek}
+\usepackage{bm}
+\usepackage{cases}
+\usepackage{mathtools}
+
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{xspace}
+\usepackage{comment}
+\usepackage{color}
+\usepackage{afterpage}
+\usepackage[normalem]{ulem}
+\usepackage{enumitem}
+
+
+
+
+\usepackage{../assets/mysymbols}
+\usepackage{amsmath,amsfonts}
+\usepackage{amsthm,amssymb,amsopn}
+\usepackage{bm} % bold symbol
+\usepackage{bbm}
+
+\newcommand{\vct}[1]{\boldsymbol{#1}} % vector
+\newcommand{\mat}[1]{\boldsymbol{#1}} % matrix
+
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\R}{\field{R}} % real domain
+\newcommand{\C}{\field{C}} % complex domain
+\newcommand{\F}{\field{F}} % functional domain
+\newcommand{\T}{^{\textrm T}} % transpose
+\newcommand{\TN}{^{-\textrm T}} % transpose
+\newcommand{\Lagr}{\mathcal{L}}
+
+
+\newcommand{\cst}[1]{\mathsf{#1}}
+
+\newcommand{\inner}[2]{#1\cdot #2}
+\newcommand{\twonorm}[1]{\|#1\|_2^2}
+\newcommand{\Map}[1]{\mathcal{#1}}
+
+\newcommand{\ProbOpr}[1]{\mathbb{#1}}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\newcommand{\cind}[3]{{#1} \independent{#2}\,|\,#3}
+\newcommand{\cndexp}[2]{\ProbOpr{E}\,[ #1\,|\,#2\,]}
+
+
+
+\newtheorem{thm}{Theorem}
+
+\newcommand{\eat}[1]{}
+
+\newcommand{\hide}[1]{}
+
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+\newcommand{\Vop}{\textrm{T}}
+\newcommand{\norminf}[1]{\norm{#1}_\infty}
+
+\newcommand{\vecy}{\ensuremath{\mathbf{y}}\xspace}
+\newcommand{\vecx}{\ensuremath{\mathbf{x}}\xspace}
+\renewcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand{\startsym}{\mbox{\scriptsize \texttt{<s>}}\xspace}
+\newcommand{\stopsym}{\mbox{\scriptsize \texttt{</s>}}\xspace}
+\newcommand{\best}{\ensuremath{\mathit{best}}\xspace}
+\newcommand{\bestuptoi}{\ensuremath{\texttt{best}_{\leq i}}\xspace}
+\newcommand{\bestuptot}{\ensuremath{\texttt{best}_{\leq t}}\xspace}
+\newcommand{\completed}{\ensuremath{\texttt{comp}}\xspace}
+\newcommand{\toptop}{\operatornamewithlimits{\mathbf{top}}}
+\newcommand{\tuple}[1]{\ensuremath{\langle {#1} \rangle}}
+\newcommand{\xuptot}{\ensuremath{\mathit{x}_{\leq t}}\xspace}
+
+
+\renewcommand{\hide}[1]{}
+\usepackage{graphicx}
+\begin{document}
+\title{CS 4644/7643: Deep Learning\\
+Fall 2026 \\
+Problem Set 1}
+
+\author{Instructor: Danfei Xu \\
+TAs: Rohan Bansal, Uzu (Chris) Lee, Alfred Cueva  \\
+Kun-Lin Hsieh, Chuye Zhang, Liqian Ma, Robert Azarcon  \\
+Dhruv Ahuja, Xinchen Yin \\
+Discussions: \url{https://piazza.com/class/ms43b2tjxa63lq\#}}
+\date{Deadline: 11:59pm September 21st, 2026}
+\maketitle
+
+\paragraph*{Instructions}
+\begin{enumerate}
+\item We will be using Gradescope to collect your assignments. Please read the following instructions for submitting to Gradescope carefully!
+     \begin{itemize}
+          \item
+               For the \textbf{HW1 Theory} component on Gradescope, upload one single PDF containing the answers to all the theory questions. \textbf{However, the solution to each problem/subproblem must be on a separate page. When submitting to Gradescope, please make sure to mark the page(s) corresponding to each problem/sub-problem.}
+          \item
+               For the \textbf{HW1 Coding} component on Gradescope, please use the \texttt{collect\_submission.py} script provided and upload the resulting \textbf{hw1\_code\_submission.zip} on Gradescope. Please make sure you have saved the most recent version of your code.
+          \item
+               For the \textbf{HW1 Notebook} component on Gradescope, please use the \texttt{collect\_submission.py} script provided and upload the resulting \textbf{hw1\_notebook\_submission.pdf} on Gradescope.
+          \item
+               Note: This is a large class and Gradescope's assignment segmentation features are essential.
+               Failure to follow these instructions may result in parts of your assignment not being graded.
+               We will not entertain regrading requests for failure to follow instructions.
+     \end{itemize}
+
+\item
+     \LaTeX'd solutions are strongly encouraged (solution template is provided in hw1\_overleaf.zip), but scanned handwritten copies are acceptable. Hard copies are \textbf{not} accepted.
+
+
+\item We generally encourage you to collaborate with other students.
+
+You may talk to a friend,
+discuss the questions and potential directions for solving them. However, you need to write
+your own solutions and code separately, and \emph{not} as a group activity.
+Please list the students you collaborated with. \\ \\
+
+\end{enumerate}
+\newpage
+
+
+\section{Collaborators [0.5 points]}
+
+Please list your collaborators and assign this list to the corresponding section of the outline on Gradescope. If you don't have any collaborators, please write 'None' and assign it to the corresponding section of the Gradescope submission regardless. Not assigning this question on Gradescope or leaving it blank will be marked as zero.
+
+
+\section{Optimization}
+
+\begin{enumerate}
+
+\item
+\textbf{[3 points]}
+Let $f(\mathbf{x})$ be a function, where $\mathbf{x} \in \mathbb{R}^d$.
+The \textit{level surface} of a function is the set of points with the same value of function, \ie
+\begin{equation}
+    L_c = \left\{ \mathbf{x} \mid f(\mathbf{x}) = c \right\} \label{q11.ls}
+\end{equation}
+for some c $\in$ $\mathbb{R}$. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.5]{assets/circle_dl.pdf}
+\end{figure}
+
+The above figure shows level surfaces for different values of c for a 2-dimensional case. The points on the perimeter of each curve illustrate the set of points sharing the same value, i.e. $f(x_1, x_2) = c$.
+
+Recall that a gradient vector is defined as $\nabla f = \left[ \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, ..., \frac{\partial f}{\partial x_d} \right]$.
+
+Consider a specific point $\mathbf{x}_0 \in \mathbb{R}^d$. Let us denote the level surface passing through this point by $L_{f(\mathbf{x_0})}$. Let us denote the gradient vector at $\mathbf{x_0}$ by $\nabla f_0$. 
+
+Now, consider an arbitrary curve $\mathbf{r}(t) = \left[x_1(t); x_2(t); \ldots, x_d(t)\right]$ (parameterized by a scalar $t$) that passes through $\mathbf{x}_0$, 
+\ie $\mathbf{r}(t_0) = \mathbf{x_0}$ for some $t_0 \in \mathbb{R}$. Furthermore, 
+the curve $\mathbf{r}(t)$ lies within the level surface passing through $\mathbf{x}_0$, \ie $\mathbf{r}(t) \in L_{f(\mathbf{x_0})}, \,\, \forall t$.  
+
+Recall that the \emph{tangent} to a curve is defined as $\frac{\del \mathbf{r}}{\del t}$. 
+
+With all that context and notation behind us, now comes the `fun' part -- 
+show that $\nabla f_0$ is orthogonal to the tangent of $\mathbf{r}(t)$ at $t_0$. 
+
+Now, please describe in non-technical language what you have just proven. Why might we care about this in the context of deep learning? 
+
+
+
+\item
+\textbf{[2 points]}
+
+The softmax function $\mathbf{s}(\mathbf{z})$, which takes a vector input $\mathbf{z}$ and outputs a vector whose $i$th entry $s_i$ is
+
+\begin{equation}
+s_i = \frac{e^{z_{i}}}{\sum_{k} e^{z_{k}}}
+\end{equation}
+
+The input vector $\mathbf{z}$ to $\mathbf{s}(\cdot)$ is sometimes called the ``logits'', which just means the unscaled output of previous layers. Derive the gradient of $\mathbf{s}$ with respect to the logits, \ie derive $\frac{\partial \mathbf{s}}{\partial \mathbf{z}}$. 
+
+\item
+\textbf{[3 points: Extra credit for both 4644 and 7643]}
+
+Recall that a ($d-1$)-dimensional simplex is defined as: 
+\begin{equation}
+    \Delta_{d - 1} = \{\mathbf{p} \in \mathbb{R}^{d} \mid \mathbf{1}^{T}\mathbf{p} = 1 \text{ and } p_i \ge 0 \,\, \forall i \in \{1,\ldots,d\} \}
+\end{equation}
+
+In this question, you will develop an interpretation of softmax as a projection operator -- that it projects an arbitrary point $\mathbf{x} \in \mathbb{R}^d$ onto the interior of the $d - 1$ simplex. Specifically, let $\mathbf{s}(\mathbf{x})$ denote the softmax function (as defined above). Now prove that, 
+
+
+\begin{align}
+    \mathbf{s}(\mathbf{x}) =  \argmin_{\mathbf{y} \in \mathbb{R}^d} &\quad  -\mathbf{x}^{T}\mathbf{y} - H(\mathbf{y}) \\ 
+     \st & \quad \mathbf{1}^{T}\mathbf{y} = 1, \quad 0 \le y_i \le 1 \quad \forall i
+\end{align}
+
+where $H$ is the entropy function: 
+
+\begin{equation}
+    H(\mathbf{y}) = - \sum_{i}y_{i}\log(y_{i})
+\end{equation}
+
+Now, what does this formal interpretation tell you about the softmax layer in a neural network? 
+Hint: Look at the KKT conditions.
+
+
+\end{enumerate}
+
+\section{SGD}
+\begin{enumerate}[resume]
+
+\item 
+\textbf{[3 points]}
+
+Consider an objective function comprised of $N=2$ terms:
+
+\begin{equation}
+f(w) = \frac{1}{2} (w-2)^2 + \frac{1}{2}(w+1)^2
+\end{equation}
+
+Now consider using SGD (with a batch-size $B=1$) to minimize this objective. Specifically, in each iteration,
+we will pick one of the two terms (uniformly at random), and take a step in the direction of the negative gradient, with a constant
+step-size of $\eta$.
+
+You can assume $\eta$ is small enough that every update does result in improvement (aka descent) on the sampled term.
+
+Is SGD guaranteed to decrease the overall loss function in every iteration? If yes, provide a proof. If no, provide a counter-example.
+
+\end{enumerate}
+
+\section{Directed Acyclic Graphs (DAG)}
+
+
+One important property for a feed-forward network, as discussed in the lectures, is that it must be a directed acyclic graph (DAG). Recall that a \emph{DAG is a directed graph that contains no directed cycles}. We will study some of its properties in this question.
+
+Let's define a graph $G=(V, E)$ in which $V$ is the set of all nodes as $\{v_1, v_2, ..., v_i, ... v_n\}$ and $E$ is the set of 
+edges $E \subseteq \{(v_i, v_j) \mid v_i, v_j \in V, \ i \neq j\}$.
+
+
+A \emph{topological order of a directed graph} $G=(V, E)$ is an ordering of its nodes as $\{v_1, v_2, ..., v_i, ... v_n\}$ so that for every edge $(v_i, v_j)$ we have $i < j$.
+
+
+There are several lemmas that can be inferred from the definition of a DAG. One lemma is: if $G$ is a DAG, then $G$ has a node with no incoming edges.   
+
+
+\begin{enumerate}[resume]
+
+\item
+\textbf{[3 points]}
+
+Prove that if the graph $G$ is a DAG, then $G$ has a topological ordering.
+
+\item
+\textbf{[3 points]}
+
+Prove that if the graph $G$ has a topological order, then $G$ is a DAG.
+
+\end{enumerate}
+
+\section{Automatic Differentiation}
+\begin{enumerate}[resume]
+
+\item
+\textbf{[2 points]}
+
+In practice, writing the closed-form expression of the derivative of
+a loss function $f$ w.r.t. the parameters of a deep neural network is hard
+(and mostly unnecessary) as $f$ becomes complex. Instead, we define
+computation graphs and use the automatic differentiation algorithms (typically backpropagation) to compute
+gradients using the chain rule. For example, consider the expression
+
+\begin{equation}
+f(x, y) = (x+y)(y+1)
+\end{equation}
+
+Let's define intermediate variables $a$ and $b$ such that
+
+\begin{equation}
+a = x + y
+\end{equation}
+\begin{equation}
+b = y + 1
+\end{equation}
+\begin{equation}
+f = a \times b
+\end{equation}
+A computation graph for the ``forward pass'' through $f$ is shown in \figref{fig:comp_graph_example}. 
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{assets/comp_graph_example.jpg}
+    \caption{}
+    \label{fig:comp_graph_example}
+\end{figure}
+
+We can then work backwards and compute the derivative of $f$ w.r.t. each
+intermediate variable ($\frac{\del f}{\del a}$, $\frac{\del f}{\del b}$) and
+chain them together to get $\frac{\del f}{\del x}$ and $\frac{\del f}{\del y}$. \\
+
+Let $\sigma(\cdot)$ denote the standard sigmoid function. Now, for the following vector function:
+
+\begin{align}
+f_1(w_1, w_2) &= \cos(w_1)\cos(w_2) + \sigma(w_2) \\
+f_2(w_1, w_2) &= ln(w_1 + w_2) + w_1^2 w_2
+\end{align}
+
+\begin{enumerate}
+\item Draw the computation graph (you might find \href{https://draw.io/}{draw.io} useful for this). Compute the value of $f$ at $\vec{w} = (1, 2)$.
+\item At this $\vec{w}$, compute the Jacobian $\frac{\del \vec{f}} {\del \vec{w}}$ using numerical differentiation (using $\Delta w$ = 0.01).
+\item At this $\vec{w}$, compute the Jacobian using forward mode auto-differentiation.
+\item At this $\vec{w}$, compute the Jacobian using backward mode auto-differentiation.
+\item Don't you love that software exists to do this for us? \textit{ungraded :)}
+\end{enumerate}
+
+\end{enumerate}
+
+\section{Paper Review}
+
+
+The first of our paper reviews for this class comes from a NeurIPS 2019 paper on the topic \textbf{`Weight Agnostic Neural Networks'} by \textbf{Adam Gaier} and \textbf{David Ha} from Google Brain.
+
+The paper presents an interesting proposition that, through a series of experiments, re-examines some fundamental notions about neural networks - in particular, the comparative importance of architectures and weights in a network's predictive performance. 
+
+The paper can be viewed \href{https://arxiv.org/abs/1906.04358}{here}.
+There's also a helpful \href{https://weightagnostic.github.io/}{interactive webpage} with intuitive visualizations to help you understand its key concepts better. 
+
+The evaluation rubric for this section is as follows:
+
+\begin{enumerate}[resume]
+\item
+\textbf{[2 points]}
+Briefly summarize the key contributions, strengths and weaknesses of this paper.
+
+\item
+\textbf{[2 points]}
+What is your personal takeaway from this paper? This could be expressed either in terms of relating the approaches adopted in this paper to your traditional understanding of learning parameterized models, or potential future directions of research in the area which the authors haven't addressed, or anything else that struck you as being noteworthy. 
+\end{enumerate}
+
+\textbf{Guidelines}: Please restrict your reviews to no more than 350 words (total length for answers to both the above questions).
+
+\end{document}
