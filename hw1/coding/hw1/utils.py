@@ -3,6 +3,7 @@ import time
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+# pyrefly: ignore [missing-import]
 from jaxtyping import Float, Int
 
 
@@ -57,7 +58,11 @@ def load_mnist_trainval():
     val_label = None
 
     ### TODO: BEGIN SOLUTION ###
-    raise NotImplementedError('TODO: Implement this function')
+    split_idx = int(0.8 * len(data))
+    train_data = data[:split_idx]
+    train_label = label[:split_idx]
+    val_data = data[split_idx:]
+    val_label = label[split_idx:]
     ### END SOLUTION ###
 
     return train_data, train_label, val_data, val_label
@@ -114,10 +119,24 @@ def generate_batched_data(
     """
     batched_data = None
     batched_label = None
-    if seed:
+    if seed is not None:
         random.seed(seed)
     ### TODO: BEGIN SOLUTION ###
-    raise NotImplementedError('TODO: Implement this function')
+    if shuffle:
+        combined = list(zip(data, label))
+        random.shuffle(combined)
+        shuffled_data, shuffled_label = zip(*combined)
+        data = list(shuffled_data)
+        label = list(shuffled_label)
+
+    batched_data = []
+    batched_label = []
+    num_samples = len(data)
+    for i in range(0, num_samples, batch_size):
+        batch_x = np.array(data[i : i + batch_size], dtype=float)
+        batch_y = np.array(label[i : i + batch_size], dtype=int)
+        batched_data.append(batch_x)
+        batched_label.append(batch_y)
     ### END SOLUTION ###
 
     return batched_data, batched_label

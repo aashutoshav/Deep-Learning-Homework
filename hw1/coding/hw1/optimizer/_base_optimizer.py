@@ -19,5 +19,7 @@ class _BaseOptimizer:
         :return: None, but the model.gradients should be updated
         """
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        for key in model.weights:
+            if not key.startswith("b"):
+                model.gradients[key] += self.reg * model.weights[key]
         ### END SOLUTION ###

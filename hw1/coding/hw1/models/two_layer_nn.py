@@ -77,14 +77,31 @@ class TwoLayerNet(_baseNetwork):
 
         # Forward Pass
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        N = X.shape[0]
+        z1 = X @ self.weights["W1"] + self.weights["b1"]
+        a1 = self.sigmoid(z1)
+        z2 = a1 @ self.weights["W2"] + self.weights["b2"]
+        probs = self.softmax(z2)
+        loss = self.cross_entropy_loss(probs, y)
+        accuracy = self.compute_accuracy(probs, y)
         ### TODO: END SOLUTION ###
         if mode != "train":
             return loss, accuracy
 
         # Backward Pass
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        d_z2 = probs.copy()
+        d_z2[np.arange(N), y] -= 1.0
+        d_z2 /= N
+
+        self.gradients["W2"] = a1.T @ d_z2
+        self.gradients["b2"] = np.sum(d_z2, axis=0)
+
+        d_a1 = d_z2 @ self.weights["W2"].T
+        d_z1 = d_a1 * self.sigmoid_dev(z1)
+
+        self.gradients["W1"] = X.T @ d_z1
+        self.gradients["b1"] = np.sum(d_z1, axis=0)
         ### END SOLUTION ###
 
         return loss, accuracy

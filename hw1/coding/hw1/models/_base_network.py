@@ -29,7 +29,9 @@ class _baseNetwork:
         """
         prob = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        shifted_scores = scores - np.max(scores, axis=-1, keepdims=True)
+        exp_scores = np.exp(shifted_scores)
+        prob = exp_scores / np.sum(exp_scores, axis=-1, keepdims=True)
         ### END SOLUTION ###
         return prob
 
@@ -52,7 +54,8 @@ class _baseNetwork:
         """
         loss = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        N = probs.shape[0]
+        loss = -np.mean(np.log(probs[np.arange(N), y] + 1e-15))
         ### END SOLUTION ###
         return loss
 
@@ -68,7 +71,8 @@ class _baseNetwork:
         """
         accuracy = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        preds = np.argmax(probs, axis=-1)
+        accuracy = float(np.mean(preds == y))
         ### END SOLUTION ###
         return accuracy
 
@@ -82,7 +86,7 @@ class _baseNetwork:
         """
         out = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        out = np.where(x >= 0, 1.0 / (1.0 + np.exp(-x)), np.exp(x) / (1.0 + np.exp(x)))
         ### END SOLUTION ###
         return out
 
@@ -95,7 +99,8 @@ class _baseNetwork:
         """
         out = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        s = self.sigmoid(x)
+        out = s * (1.0 - s)
         ### END SOLUTION ###
         return out
 
@@ -109,7 +114,7 @@ class _baseNetwork:
         """
         out = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        out = np.maximum(0.0, x)
         ### END SOLUTION ###
         return out
 
@@ -123,6 +128,6 @@ class _baseNetwork:
         """
         out = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        out = (x > 0).astype(float)
         ### END SOLUTION ###
         return out

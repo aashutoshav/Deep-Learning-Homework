@@ -52,13 +52,22 @@ class SoftmaxRegression(_baseNetwork):
         loss = None
         accuracy = None
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        N = X.shape[0]
+        z1 = X @ self.weights["W1"]
+        a1 = self.ReLU(z1)
+        probs = self.softmax(a1)
+        loss = self.cross_entropy_loss(probs, y)
+        accuracy = self.compute_accuracy(probs, y)
         ### END SOLUTION ###
         if mode != "train":
             return loss, accuracy
 
         # Backward pass
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        d_a1 = probs.copy()
+        d_a1[np.arange(N), y] -= 1.0
+        d_a1 /= N
+        d_z1 = d_a1 * self.ReLU_dev(z1)
+        self.gradients["W1"] = X.T @ d_z1
         ### END SOLUTION ###
         return loss, accuracy

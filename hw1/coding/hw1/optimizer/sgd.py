@@ -15,5 +15,7 @@ class SGD(_BaseOptimizer):
         :return: None, but the model.weights should be updated
         """
         ### TODO: BEGIN SOLUTION ###
-        raise NotImplementedError('TODO: Implement this function')
+        self.apply_regularization(model)
+        for key in model.weights:
+            model.weights[key] -= self.learning_rate * model.gradients[key]
         ### END SOLUTION ###
